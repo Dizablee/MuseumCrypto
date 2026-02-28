@@ -28,9 +28,10 @@ public partial class MainForm : Form
 
         // Window
         StartPosition = FormStartPosition.CenterScreen;
-        ClientSize = new Size(1020, 680);
-        MinimumSize = new Size(900, 580);
+        ClientSize = new Size(1040, 700);
+        MinimumSize = new Size(920, 600);
         Font = new Font("Segoe UI", 10F);
+        BackColor = Color.FromArgb(244, 247, 252);
 
         // Tabs
         tabs = new TabControl { Dock = DockStyle.Fill };
@@ -57,7 +58,8 @@ public partial class MainForm : Form
         {
             Text = "Операция с файлом",
             Dock = DockStyle.Fill,
-            Padding = new Padding(12)
+            Padding = new Padding(12),
+            ForeColor = Color.FromArgb(40, 70, 110)
         };
         rootOps.Controls.Add(gbOps, 0, 0);
 
@@ -66,7 +68,8 @@ public partial class MainForm : Form
         {
             Text = "Подсказка",
             Dock = DockStyle.Fill,
-            Padding = new Padding(12)
+            Padding = new Padding(12),
+            ForeColor = Color.FromArgb(40, 70, 110)
         };
         rootOps.Controls.Add(gbHint, 0, 1);
 
@@ -81,7 +84,7 @@ public partial class MainForm : Form
                 "2) Выбери операцию Encrypt / Decrypt\n" +
                 "3) Введи пароль/фразу\n" +
                 "4) Нажми «Выполнить»\n\n" +
-                "Результат сохранится рядом с исходным файлом."
+                "5) Выбери, куда сохранить результат в диалоге."
         };
         gbHint.Controls.Add(lblHint);
 
@@ -94,10 +97,10 @@ public partial class MainForm : Form
         };
 
         // Fixed+percent columns => не съезжает
-        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 62));
-        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
-        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38));
-        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 190));
+        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 58));
+        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 176));
+        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42));
+        ops.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200));
 
         ops.RowStyles.Add(new RowStyle(SizeType.Absolute, 24)); // labels
         ops.RowStyles.Add(new RowStyle(SizeType.Absolute, 46)); // file
@@ -168,12 +171,12 @@ public partial class MainForm : Form
         // Right buttons (fixed column)
         rightButtons = new FlowLayoutPanel
         {
-            Dock = DockStyle.Top,
+            Dock = DockStyle.Fill,
             FlowDirection = FlowDirection.TopDown,
             WrapContents = false,
-            AutoSize = true,
+            AutoSize = false,
             Margin = new Padding(0),
-            Padding = new Padding(0)
+            Padding = new Padding(0, 2, 0, 0)
         };
 
         _run.Text = "Выполнить";
@@ -192,6 +195,21 @@ public partial class MainForm : Form
         _reportBtn.Font = new Font("Segoe UI", 10F);
         _usersBtn.Font = new Font("Segoe UI", 10F);
 
+        _run.FlatStyle = FlatStyle.Flat;
+        _run.BackColor = Color.FromArgb(43, 108, 176);
+        _run.ForeColor = Color.White;
+        _run.Margin = new Padding(0, 0, 0, 8);
+
+        _reportBtn.FlatStyle = FlatStyle.Flat;
+        _reportBtn.BackColor = Color.FromArgb(232, 239, 250);
+        _reportBtn.ForeColor = Color.FromArgb(26, 63, 107);
+        _reportBtn.Margin = new Padding(0, 0, 0, 8);
+
+        _usersBtn.FlatStyle = FlatStyle.Flat;
+        _usersBtn.BackColor = Color.FromArgb(232, 239, 250);
+        _usersBtn.ForeColor = Color.FromArgb(26, 63, 107);
+        _usersBtn.Margin = new Padding(0);
+
         rightButtons.Controls.Add(_run);
         rightButtons.Controls.Add(_reportBtn);
         rightButtons.Controls.Add(_usersBtn);
@@ -201,7 +219,8 @@ public partial class MainForm : Form
         {
             Text = "Статус",
             Dock = DockStyle.Fill,
-            Padding = new Padding(10)
+            Padding = new Padding(10),
+            ForeColor = Color.FromArgb(40, 70, 110)
         };
         gbStatus.Controls.Add(_status);
 
