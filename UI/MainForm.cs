@@ -107,7 +107,12 @@ public partial class MainForm : Form
             return;
         }
 
-        var outPath = _storage.BuildOutputPath(path, op);
+        var outPath = AskOutputPath(path, op);
+        if (string.IsNullOrWhiteSpace(outPath))
+        {
+            _status.Text = "Операция отменена: путь сохранения не выбран.";
+            return;
+        }
 
         try
         {
@@ -126,6 +131,27 @@ public partial class MainForm : Form
             _audit.Write(_user, op, Path.GetFileName(path), OperationStatus.Fail, ex.Message);
             _status.Text = "Ошибка: " + ex.Message;
         }
+    }
+
+    private string? AskOutputPath(string sourcePath, CryptoOperationType op)
+    {
+        var suggestedPath = _storage.BuildOutputPath(sourcePath, op);
+        var extension = Path.GetExtension(suggestedPath);
+        var extensionWithoutDot = extension.TrimStart('.');
+
+        using var sfd = new SaveFileDialog
+        {
+            FileName = Path.GetFileName(suggestedPath),
+            InitialDirectory = Path.GetDirectoryName(sourcePath),
+            AddExtension = true,
+            OverwritePrompt = true,
+            Filter = string.IsNullOrWhiteSpace(extensionWithoutDot)
+                ? "Все файлы (*.*)|*.*"
+                : $"Файлы (*{extension})|*{extension}|Все файлы (*.*)|*.*",
+            DefaultExt = extensionWithoutDot
+        };
+
+        return sfd.ShowDialog() == DialogResult.OK ? sfd.FileName : null;
     }
 
     private void Deny(CryptoOperationType op, string msg)
