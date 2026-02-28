@@ -13,7 +13,7 @@ public partial class MainForm : Form
     private GroupBox gbHint = null!;
 
     private TableLayoutPanel ops = null!;
-    private FlowLayoutPanel rightButtons = null!;
+    private TableLayoutPanel rightButtons = null!;
     private Label lblHint = null!;
 
     protected override void Dispose(bool disposing)
@@ -169,15 +169,20 @@ public partial class MainForm : Form
         ops.SetRowSpan(_passphrase, 2);
 
         // Right buttons (fixed column)
-        rightButtons = new FlowLayoutPanel
+        rightButtons = new TableLayoutPanel
         {
-            Dock = DockStyle.Fill,
-            FlowDirection = FlowDirection.TopDown,
-            WrapContents = false,
-            AutoSize = false,
+            Dock = DockStyle.Top,
+            ColumnCount = 1,
+            RowCount = 4,
             Margin = new Padding(0),
-            Padding = new Padding(0, 2, 0, 0)
+            Padding = new Padding(0, 2, 0, 0),
+            AutoSize = true
         };
+        rightButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
+        rightButtons.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+        rightButtons.RowStyles.Add(new RowStyle(SizeType.Absolute, 6));
+        rightButtons.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
+        rightButtons.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
 
         _run.Text = "Выполнить";
         _reportBtn.Text = "Отчёт CSV";
@@ -198,25 +203,28 @@ public partial class MainForm : Form
         _run.FlatStyle = FlatStyle.Flat;
         _run.BackColor = Color.FromArgb(43, 108, 176);
         _run.ForeColor = Color.White;
-        _run.Margin = new Padding(0, 0, 0, 6);
+        _run.Margin = new Padding(0);
 
         _reportBtn.FlatStyle = FlatStyle.Flat;
         _reportBtn.BackColor = Color.FromArgb(232, 239, 250);
         _reportBtn.ForeColor = Color.FromArgb(26, 63, 107);
-        _reportBtn.Margin = new Padding(0, 0, 0, 6);
+        _reportBtn.Margin = new Padding(0);
 
         _usersBtn.FlatStyle = FlatStyle.Flat;
         _usersBtn.BackColor = Color.FromArgb(232, 239, 250);
         _usersBtn.ForeColor = Color.FromArgb(26, 63, 107);
         _usersBtn.Margin = new Padding(0);
 
-        _run.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-        _reportBtn.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-        _usersBtn.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+        var spacer = new Panel { Dock = DockStyle.Fill, Margin = new Padding(0) };
 
-        rightButtons.Controls.Add(_run);
-        rightButtons.Controls.Add(_reportBtn);
-        rightButtons.Controls.Add(_usersBtn);
+        _run.Dock = DockStyle.Fill;
+        _reportBtn.Dock = DockStyle.Fill;
+        _usersBtn.Dock = DockStyle.Fill;
+
+        rightButtons.Controls.Add(_run, 0, 0);
+        rightButtons.Controls.Add(spacer, 0, 1);
+        rightButtons.Controls.Add(_reportBtn, 0, 2);
+        rightButtons.Controls.Add(_usersBtn, 0, 3);
 
         // Status box
         var gbStatus = new GroupBox
